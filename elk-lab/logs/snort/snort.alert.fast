@@ -1,0 +1,7 @@
+05/18-13:47:11.136647  [**] [1:527:8] BAD-TRAFFIC same SRC/DST [**] [Classification: Potentially Bad Traffic] [Priority: 2] {IPV6-ICMP} :: -> ff02::16
+05/18-13:47:11.254754  [**] [1:527:8] BAD-TRAFFIC same SRC/DST [**] [Classification: Potentially Bad Traffic] [Priority: 2] {IPV6-ICMP} :: -> ff02::16
+05/18-13:47:12.014864  [**] [1:527:8] BAD-TRAFFIC same SRC/DST [**] [Classification: Potentially Bad Traffic] [Priority: 2] {IPV6-ICMP} :: -> ff02::1:ff91:87fa
+05/18-14:13:46.963066  [**] [1:1421:11] SNMP AgentX/tcp request [**] [Classification: Attempted Information Leak] [Priority: 2] {TCP} 172.22.0.4:49499 -> 172.22.0.2:705
+05/18-14:13:46.985047  [**] [1:1418:11] SNMP request tcp [**] [Classification: Attempted Information Leak] [Priority: 2] {TCP} 172.22.0.4:49499 -> 172.22.0.2:161
+05/18-14:25:11.674618  [**] [1:1418:11] SNMP request tcp [**] [Classification: Attempted Information Leak] [Priority: 2] {TCP} 172.22.0.4:39166 -> 172.22.0.2:161
+05/18-14:25:11.677784  [**] [1:1421:11] SNMP AgentX/tcp request [**] [Classification: Attempted Information Leak] [Priority: 2] {TCP} 172.22.0.4:39166 -> 172.22.0.2:705

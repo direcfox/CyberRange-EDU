@@ -1,0 +1,27 @@
+services:
+  webftp:
+    build: ./webftp
+    container_name: webftpsnort
+    ports:
+      - "8081:80"
+      - "2121:21"
+      - "40000-40010:40000-40010"
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    tty: true
+    stdin_open: true
+    command: ["snort","-q","-i","eth0","-c","/etc/snort/snort.conf","-l","/var/log/snort","-A","fast","-K","none"]
+    volumes:
+      - ./data/www:/var/www/html
+      - ./data/ftp:/srv/ftp
+      - ./logs/nginx:/var/log/nginx
+      - ./logs/vsftpd:/var/log/vsftpd
+      - ./snort.conf:/etc/snort/snort.conf
+      - ./rules:/etc/snort/rules
+      - ./logs/snort:/var/log/snort
+    networks:
+      - elknet
+networks:
+  elknet:
+    external: true

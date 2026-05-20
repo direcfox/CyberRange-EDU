@@ -1,0 +1,10 @@
+services:
+  attacker:
+    build: .
+    container_name: attacker-machine
+    hostname: attacker
+    ports:
+      - "8081:80"
+    volumes:
+      - ./www:/var/www/html
+

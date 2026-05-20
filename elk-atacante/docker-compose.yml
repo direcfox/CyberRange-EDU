@@ -1,0 +1,41 @@
+services:
+  attacker:
+    build: .
+    container_name: attacker-machine
+    hostname: attacker
+    ports:
+      - "8082:80"
+    volumes:
+      - ./www:/var/www/html
+    depends_on:
+      - mysql
+    privileged: true
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    networks:
+      - elknet
+    tty: true
+    stdin_open: true 
+
+  mysql:
+    image: mysql:8.0 
+    container_name: attacker-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: attackerdb
+      MYSQL_USER: attacker
+      MYSQL_PASSWORD: attakeerpass
+    ports:
+      - "3307:3306"
+    volumes:
+      - attacker_mysql_data:/var/lib/mysql
+    networks:
+      - elknet
+
+volumes:
+  attacker_mysql_data:
+
+networks:
+  elknet:
+    external: true

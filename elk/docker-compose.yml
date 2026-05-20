@@ -1,0 +1,73 @@
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:9.3.3
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+    ports:
+      - "9200:9200"
+    mem_limit: 1g
+    networks:
+      - elknet
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:9.3.3
+    container_name: logstash
+    volumes:
+      - ./logstash/pipeline:/usr/share/logstash/pipeline:ro
+    ports:
+      - "5044:5044"
+    depends_on:
+      - elasticsearch
+    networks:
+      - elknet
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:9.3.3
+    container_name: kibana
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+    networks:
+      - elknet
+
+  webclient:
+    image: nginx:1.28-alpine
+    container_name: webclient
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx/html:/usr/share/nginx/html:ro
+      - web_logs:/var/log/nginx
+    networks:
+      - elknet
+
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:9.3.3
+    container_name: filebeat
+    user: root
+    command: ["filebeat", "-e", "--strict.perms=false"]
+    volumes:
+      - ./filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+      - ../elk-lab/logs/nginx:/var/log/nginx:ro
+      - ../elk-lab/logs/vsftpd:/var/log/vsftpd:ro
+      - ../elk-lab/logs/snort:/var/log/snort:ro
+      - filebeat_data:/usr/share/filebeat/data
+    depends_on:
+      - logstash
+      - webclient
+    networks:
+      - elknet
+
+volumes:
+  web_logs:
+  filebeat_data:
+
+networks:
+  elknet:
+    external: true
+

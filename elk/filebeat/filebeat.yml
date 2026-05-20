@@ -1,0 +1,39 @@
+filebeat.inputs:
+  - type: filestream
+    id: nginx-access
+    enabled: true
+    paths:
+      - /var/log/nginx/access.log
+    prospector.scanner.fingerprint.length: 64
+    prospector.scanner.fingerprint.offset: 0
+
+  - type: filestream
+    id: nginx-error
+    enabled: true
+    paths:
+      - /var/log/nginx/error.log
+    prospector.scanner.fingerprint.length: 64
+    prospector.scanner.fingerprint.offset: 0
+
+  - type: filestream
+    id: vsftpd-log
+    enabled: true
+    paths:
+      - /var/log/vsftpd/vsftpd.log
+    prospector.scanner.fingerprint.length: 64
+    prospector.scanner.fingerprint.offset: 0
+
+  - type: filestream
+    id: snort-alert
+    enabled: true
+    paths:
+      - /var/log/snort/alert
+    fields:
+      log_type: snort
+      service: ids
+    fields_under_root: true
+
+#output.elasticsearch:
+  #  hosts: ["http://elasticsearch:9200"]
+output.logstash:
+  hosts: ["logstash:5044"]
